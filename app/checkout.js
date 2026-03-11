@@ -10,7 +10,7 @@ const PLANS = [
   {
     id: "starter",
     name: "Starter",
-    price: "1.497",
+    price: "97.00",
     period: "/mês",
     badge: null,
     features: [
@@ -25,7 +25,7 @@ const PLANS = [
   {
     id: "professional",
     name: "Professional",
-    price: "2.997",
+    price: "297,00",
     period: "/mês",
     badge: "MAIS POPULAR",
     features: [
@@ -42,7 +42,7 @@ const PLANS = [
   {
     id: "enterprise",
     name: "Enterprise",
-    price: "5.997",
+    price: "497,00",
     period: "/mês",
     badge: "MÁXIMO RESULTADO",
     features: [
@@ -545,7 +545,7 @@ export default function Checkout() {
             APEX QUANTUM
           </div>
           <p style={{ margin: "0 0 6px", fontSize: "12px" }}>
-            © 2025 Apex Quantum AI. Todos os direitos reservados.
+            © 2026 Apex Quantum AI. Todos os direitos reservados.
           </p>
           <p style={{ margin: 0, fontSize: "11px", color: "#334155" }}>
             Todo investimento envolve riscos. Rentabilidade passada não é garantia de resultados futuros.
