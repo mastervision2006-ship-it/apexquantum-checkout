@@ -3,63 +3,74 @@
 import { useState, useEffect } from "react";
 
 /* ─────────────────────────────────────────────
-   CONFIGURAÇÃO — Edite aqui seus planos e dados
+   CONFIGURAÇÃO — Planos, Pix e Depoimentos
    ───────────────────────────────────────────── */
 
 const PLANS = [
   {
-    id: "starter",
-    name: "Starter",
-    price: "97.00",
-    period: "/mês",
+    id: "ia-trading",
+    name: "IA Trading",
+    price: "97,00",
+    priceShort: "97",
+    period: "pagamento único",
     badge: null,
     features: [
-      "Acesso à IA de análise de mercado",
-      "Operações automáticas básicas",
-      "Suporte por e-mail",
-      "1 ativo monitorado",
-      "Relatórios semanais",
+      "Software de IA com validade de 1 ano",
+      "Voucher de $100,00 para experimentar por 7 dias",
+      "Caso faça depósito com nossas parceiras, vira vitalício",
+      "Consultoria e programação do software personalizada",
+      "Garantia incondicional de 7 dias",
     ],
+    pixCode:
+      "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a520400005303986540597.005802BR5911ECOTECH LTD6002NA622905250018a8007afc4aadbb1c1f450630417AC",
+    qrImage: "https://i.ibb.co/zWWJhvL4",
     highlight: false,
   },
   {
-    id: "professional",
-    name: "Professional",
-    price: "297,00",
-    period: "/mês",
+    id: "ia-trading-plus",
+    name: "IA Trading PLUS",
+    price: "597,00",
+    priceShort: "597",
+    period: "pagamento único",
     badge: "MAIS POPULAR",
     features: [
-      "Tudo do plano Starter +",
-      "Operações ilimitadas",
-      "Suporte prioritário via WhatsApp",
-      "Até 10 ativos monitorados",
-      "Relatórios diários em tempo real",
-      "Gestão automática de risco",
-      "Acesso ao painel avançado",
+      "Software de IA Vitalício — sem mensalidades",
+      "Saldo investido + Voucher de $100,00 (total $200,00 na conta)",
+      "Programação personalizada com alavancagem",
+      "Consultoria de investimentos completa",
+      "Planejamento patrimonial exclusivo",
+      "Garantia incondicional de 7 dias",
     ],
+    pixCode:
+      "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a5204000053039865406597.005802BR5911ECOTECH LTD6002NA62290525003caf232cfd4d738bc22996c63042CE0",
+    qrImage: "https://i.ibb.co/0jY4N4x1",
     highlight: true,
   },
   {
-    id: "enterprise",
-    name: "Enterprise",
-    price: "497,00",
-    period: "/mês",
-    badge: "MÁXIMO RESULTADO",
+    id: "ia-trading-master",
+    name: "IA Trading MASTER",
+    price: "1.997,00",
+    priceShort: "1.997",
+    period: "pagamento único",
+    badge: "RESULTADOS MÁXIMOS",
     features: [
-      "Tudo do plano Professional +",
-      "Ativos ilimitados",
-      "Gerente de conta dedicado",
-      "Configurações personalizadas de IA",
-      "Análise institucional exclusiva",
-      "Execução de alta frequência",
-      "Relatórios sob demanda",
-      "Linha direta com especialistas",
+      "Software de IA Vitalício — acesso ilimitado",
+      "Saldo investido + Voucher Premium de $500,00",
+      "Alavancagem avançada com IA de alta frequência",
+      "Gerente de conta pessoal dedicado",
+      "Consultoria VIP com especialistas do mercado",
+      "Planejamento patrimonial e diversificação global",
+      "Configurações exclusivas e estratégias institucionais",
+      "Suporte prioritário 24/7 via WhatsApp",
+      "Acesso antecipado a novas funcionalidades",
+      "Garantia incondicional de 7 dias",
     ],
+    pixCode:
+      "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a52040000530398654071997.005802BR5911ECOTECH LTD6002NA6229052500f5db3b146348f184dbf8e6c6304A28F",
+    qrImage: "https://i.ibb.co/wFSHK13d",
     highlight: false,
   },
 ];
-
-const PIX_KEY = "SUA-CHAVE-PIX-AQUI";
 
 const TESTIMONIALS = [
   {
@@ -150,25 +161,12 @@ function CheckCircleIcon() {
   );
 }
 
-function PixIcon() {
-  return (
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="3" height="3" />
-      <path d="M21 14h-3v3" />
-      <path d="M18 21v-3h3" />
-    </svg>
-  );
-}
-
 /* ─────────────────────────
    COMPONENTE PRINCIPAL
    ───────────────────────── */
 
 export default function Checkout() {
-  const [selectedPlan, setSelectedPlan] = useState("professional");
+  const [selectedPlan, setSelectedPlan] = useState("ia-trading-plus");
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [errors, setErrors] = useState({});
@@ -195,7 +193,7 @@ export default function Checkout() {
   const currentPlan = PLANS.find((p) => p.id === selectedPlan);
 
   const handleCopyPix = () => {
-    navigator.clipboard.writeText(PIX_KEY).catch(() => {});
+    navigator.clipboard.writeText(currentPlan.pixCode).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -203,8 +201,10 @@ export default function Checkout() {
   const validate = () => {
     const e = {};
     if (!formData.name.trim()) e.name = "Informe seu nome";
-    if (!formData.email.trim() || !formData.email.includes("@")) e.email = "Informe um e-mail válido";
-    if (!formData.phone.trim() || formData.phone.replace(/\D/g, "").length < 10) e.phone = "Informe um WhatsApp válido";
+    if (!formData.email.trim() || !formData.email.includes("@"))
+      e.email = "Informe um e-mail válido";
+    if (!formData.phone.trim() || formData.phone.replace(/\D/g, "").length < 10)
+      e.phone = "Informe um WhatsApp válido";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -241,7 +241,9 @@ export default function Checkout() {
         {/* ── TIMER ── */}
         <div style={timerBarStyle}>
           <ClockIcon />
-          <span style={{ color: "#FCA5A5", fontSize: "14px" }}>Oferta exclusiva expira em</span>
+          <span style={{ color: "#FCA5A5", fontSize: "14px" }}>
+            Oferta exclusiva expira em
+          </span>
           <span style={timerCountStyle}>{formatTime(timeLeft)}</span>
         </div>
 
@@ -298,32 +300,79 @@ export default function Checkout() {
                       borderRadius: "20px",
                       whiteSpace: "nowrap",
                       background:
-                        plan.id === "enterprise"
+                        plan.id === "ia-trading-master"
                           ? "linear-gradient(135deg, #EF4444, #DC2626)"
                           : "linear-gradient(135deg, #22D3EE, #0891B2)",
-                      color: plan.id === "enterprise" ? "#fff" : "#0A0E1A",
+                      color:
+                        plan.id === "ia-trading-master" ? "#fff" : "#0A0E1A",
                     }}
                   >
                     {plan.badge}
                   </div>
                 )}
 
-                <div style={{ fontSize: "18px", fontWeight: "600", color: "#E2E8F0", marginTop: plan.badge ? "8px" : "0", marginBottom: "10px" }}>
+                <div
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "600",
+                    color: "#E2E8F0",
+                    marginTop: plan.badge ? "8px" : "0",
+                    marginBottom: "10px",
+                  }}
+                >
                   {plan.name}
                 </div>
 
                 <div style={{ marginBottom: "4px" }}>
-                  <span style={{ fontSize: "16px", fontWeight: "600", color: "#94A3B8", verticalAlign: "top" }}>R$ </span>
-                  <span className="plan-price" style={{ fontSize: "38px", fontWeight: "800", color: "#F1F5F9", lineHeight: "1" }}>
-                    {plan.price}
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#94A3B8",
+                      verticalAlign: "top",
+                    }}
+                  >
+                    R${" "}
+                  </span>
+                  <span
+                    className="plan-price"
+                    style={{
+                      fontSize: "38px",
+                      fontWeight: "800",
+                      color: "#F1F5F9",
+                      lineHeight: "1",
+                    }}
+                  >
+                    {plan.priceShort}
                   </span>
                 </div>
-                <div style={{ fontSize: "14px", color: "#64748B", marginBottom: "22px" }}>{plan.period}</div>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "#64748B",
+                    marginBottom: "22px",
+                  }}
+                >
+                  {plan.period}
+                </div>
 
                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                   {plan.features.map((f, i) => (
-                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", padding: "5px 0", fontSize: "13px", color: "#CBD5E1", lineHeight: "1.5" }}>
-                      <span style={{ flexShrink: 0, marginTop: "1px" }}><CheckIcon /></span>
+                    <li
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "10px",
+                        padding: "5px 0",
+                        fontSize: "13px",
+                        color: "#CBD5E1",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      <span style={{ flexShrink: 0, marginTop: "1px" }}>
+                        <CheckIcon />
+                      </span>
                       <span>{f}</span>
                     </li>
                   ))}
@@ -340,7 +389,9 @@ export default function Checkout() {
                     fontWeight: "700",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
-                    background: isSelected ? "linear-gradient(135deg, #22D3EE, #0891B2)" : "rgba(148,163,184,0.08)",
+                    background: isSelected
+                      ? "linear-gradient(135deg, #22D3EE, #0891B2)"
+                      : "rgba(148,163,184,0.08)",
                     color: isSelected ? "#0A0E1A" : "#94A3B8",
                   }}
                 >
@@ -354,44 +405,114 @@ export default function Checkout() {
         {/* ── FORMULÁRIO / PAGAMENTO ── */}
         <div className="form-section" style={formSectionStyle}>
           {/* Steps */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "28px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "12px",
+              marginBottom: "28px",
+            }}
+          >
             <div style={stepDot(true)}>1</div>
-            <div style={{ width: "48px", height: "2px", background: step >= 2 ? "rgba(34,211,238,0.4)" : "rgba(148,163,184,0.12)", transition: "background 0.4s" }} />
+            <div
+              style={{
+                width: "48px",
+                height: "2px",
+                background:
+                  step >= 2
+                    ? "rgba(34,211,238,0.4)"
+                    : "rgba(148,163,184,0.12)",
+                transition: "background 0.4s",
+              }}
+            />
             <div style={stepDot(step >= 2)}>2</div>
           </div>
 
           {step === 1 ? (
             <>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#F1F5F9", textAlign: "center", marginBottom: "4px" }}>
+              <h2
+                style={{
+                  fontSize: "22px",
+                  fontWeight: "700",
+                  color: "#F1F5F9",
+                  textAlign: "center",
+                  marginBottom: "4px",
+                }}
+              >
                 Seus dados
               </h2>
-              <p style={{ fontSize: "13px", color: "#64748B", textAlign: "center", marginBottom: "24px" }}>
-                Preencha para confirmar sua assinatura
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#64748B",
+                  textAlign: "center",
+                  marginBottom: "24px",
+                }}
+              >
+                Preencha para confirmar sua compra
               </p>
 
               {/* Plan Summary */}
               <div style={planSummaryStyle}>
                 <div>
-                  <div style={{ fontSize: "11px", color: "#64748B", marginBottom: "2px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "#64748B",
+                      marginBottom: "2px",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
                     Plano selecionado
                   </div>
-                  <div style={{ fontSize: "17px", fontWeight: "700", color: "#22D3EE" }}>
+                  <div
+                    style={{
+                      fontSize: "17px",
+                      fontWeight: "700",
+                      color: "#22D3EE",
+                    }}
+                  >
                     {currentPlan.name}
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "22px", fontWeight: "800", color: "#F1F5F9" }}>
+                  <div
+                    style={{
+                      fontSize: "22px",
+                      fontWeight: "800",
+                      color: "#F1F5F9",
+                    }}
+                  >
                     R$ {currentPlan.price}
                   </div>
-                  <div style={{ fontSize: "12px", color: "#64748B" }}>{currentPlan.period}</div>
+                  <div style={{ fontSize: "12px", color: "#64748B" }}>
+                    {currentPlan.period}
+                  </div>
                 </div>
               </div>
 
               {/* Inputs */}
               {[
-                { key: "name", label: "Nome completo", type: "text", placeholder: "Seu nome completo" },
-                { key: "email", label: "E-mail", type: "email", placeholder: "seu@email.com" },
-                { key: "phone", label: "WhatsApp", type: "tel", placeholder: "(00) 00000-0000" },
+                {
+                  key: "name",
+                  label: "Nome completo",
+                  type: "text",
+                  placeholder: "Seu nome completo",
+                },
+                {
+                  key: "email",
+                  label: "E-mail",
+                  type: "email",
+                  placeholder: "seu@email.com",
+                },
+                {
+                  key: "phone",
+                  label: "WhatsApp",
+                  type: "tel",
+                  placeholder: "(00) 00000-0000",
+                },
               ].map((field) => (
                 <div key={field.key} style={{ marginBottom: "16px" }}>
                   <label style={labelStyle}>{field.label}</label>
@@ -400,16 +521,26 @@ export default function Checkout() {
                     placeholder={field.placeholder}
                     style={{
                       ...inputStyle,
-                      borderColor: errors[field.key] ? "rgba(239,68,68,0.5)" : "rgba(148,163,184,0.15)",
+                      borderColor: errors[field.key]
+                        ? "rgba(239,68,68,0.5)"
+                        : "rgba(148,163,184,0.15)",
                     }}
                     value={formData[field.key]}
                     onChange={(e) => {
                       setFormData({ ...formData, [field.key]: e.target.value });
-                      if (errors[field.key]) setErrors({ ...errors, [field.key]: null });
+                      if (errors[field.key])
+                        setErrors({ ...errors, [field.key]: null });
                     }}
                   />
                   {errors[field.key] && (
-                    <span style={{ fontSize: "12px", color: "#F87171", marginTop: "4px", display: "block" }}>
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: "#F87171",
+                        marginTop: "4px",
+                        display: "block",
+                      }}
+                    >
                       {errors[field.key]}
                     </span>
                   )}
@@ -424,31 +555,63 @@ export default function Checkout() {
             </>
           ) : (
             <div style={{ textAlign: "center" }}>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#F1F5F9", marginBottom: "4px" }}>
+              <h2
+                style={{
+                  fontSize: "22px",
+                  fontWeight: "700",
+                  color: "#F1F5F9",
+                  marginBottom: "4px",
+                }}
+              >
                 Pagamento via Pix
               </h2>
-              <p style={{ fontSize: "14px", color: "#94A3B8", marginBottom: "2px" }}>
-                Plano <strong style={{ color: "#22D3EE" }}>{currentPlan.name}</strong>
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: "#94A3B8",
+                  marginBottom: "2px",
+                }}
+              >
+                Plano{" "}
+                <strong style={{ color: "#22D3EE" }}>
+                  {currentPlan.name}
+                </strong>
               </p>
-              <p style={{ fontSize: "26px", fontWeight: "800", color: "#F1F5F9", marginBottom: "4px" }}>
-                R$ {currentPlan.price}<span style={{ fontSize: "14px", color: "#64748B", fontWeight: "400" }}>{currentPlan.period}</span>
+              <p
+                style={{
+                  fontSize: "28px",
+                  fontWeight: "800",
+                  color: "#F1F5F9",
+                  marginBottom: "4px",
+                }}
+              >
+                R$ {currentPlan.price}
               </p>
-              <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#64748B",
+                  marginBottom: "20px",
+                }}
+              >
                 Escaneie o QR Code ou copie o código Pix abaixo
               </p>
 
-              {/* QR Code Placeholder */}
+              {/* QR Code Image */}
               <div style={qrBoxStyle}>
-                {/* 
-                  ✏️ SUBSTITUA ESTE BLOCO PELA SUA IMAGEM DO QR CODE:
-                  <img src="/qrcode-pix.png" alt="QR Code Pix" width={200} height={200} />
-                */}
-                <PixIcon />
-                <div style={{ fontSize: "14px", color: "#475569", fontWeight: "600" }}>QR Code Pix</div>
-                <div style={{ fontSize: "11px", color: "#94A3B8" }}>Substitua por sua imagem</div>
+                <img
+                  src={currentPlan.qrImage}
+                  alt={`QR Code Pix - ${currentPlan.name}`}
+                  width={200}
+                  height={200}
+                  style={{
+                    borderRadius: "8px",
+                    display: "block",
+                  }}
+                />
               </div>
 
-              {/* Copy Button */}
+              {/* Copy Pix Button */}
               <button
                 onClick={handleCopyPix}
                 style={{
@@ -457,8 +620,12 @@ export default function Checkout() {
                   gap: "8px",
                   padding: "12px 28px",
                   borderRadius: "10px",
-                  border: copied ? "1px solid rgba(34,197,94,0.3)" : "1px solid rgba(34,211,238,0.3)",
-                  background: copied ? "rgba(34,197,94,0.1)" : "rgba(34,211,238,0.05)",
+                  border: copied
+                    ? "1px solid rgba(34,197,94,0.3)"
+                    : "1px solid rgba(34,211,238,0.3)",
+                  background: copied
+                    ? "rgba(34,197,94,0.1)"
+                    : "rgba(34,211,238,0.05)",
                   color: copied ? "#22C55E" : "#22D3EE",
                   fontSize: "14px",
                   fontWeight: "600",
@@ -471,10 +638,31 @@ export default function Checkout() {
                 {copied ? "Código copiado!" : "Copiar código Pix"}
               </button>
 
-              {/* Comprovante notice */}
+              {/* Pix code preview */}
+              <div
+                style={{
+                  marginTop: "16px",
+                  padding: "12px 16px",
+                  borderRadius: "10px",
+                  background: "rgba(10,14,26,0.8)",
+                  border: "1px solid rgba(148,163,184,0.1)",
+                  fontSize: "11px",
+                  color: "#64748B",
+                  wordBreak: "break-all",
+                  lineHeight: "1.6",
+                  maxHeight: "60px",
+                  overflow: "hidden",
+                  textAlign: "left",
+                }}
+              >
+                {currentPlan.pixCode}
+              </div>
+
+              {/* Notice */}
               <div style={noticeBoxStyle}>
                 <p style={{ fontSize: "13px", color: "#FCD34D", margin: 0 }}>
-                  ⏳ Após o pagamento, envie o comprovante no WhatsApp para ativação imediata da sua conta.
+                  ⏳ Após o pagamento, envie o comprovante no WhatsApp para
+                  ativação imediata da sua conta.
                 </p>
               </div>
 
@@ -502,37 +690,87 @@ export default function Checkout() {
             <ShieldIcon />
           </div>
           <div>
-            <div style={{ fontSize: "17px", fontWeight: "700", color: "#F1F5F9", marginBottom: "6px" }}>
+            <div
+              style={{
+                fontSize: "17px",
+                fontWeight: "700",
+                color: "#F1F5F9",
+                marginBottom: "6px",
+              }}
+            >
               Garantia Incondicional de 7 Dias
             </div>
-            <p style={{ fontSize: "14px", color: "#94A3B8", lineHeight: "1.7", margin: 0 }}>
-              Se por qualquer motivo você não ficar satisfeito com a Apex Quantum nos primeiros 7 dias, basta nos enviar uma mensagem e devolvemos <strong style={{ color: "#22D3EE" }}>100% do seu investimento</strong>. Sem perguntas, sem burocracia. O risco é todo nosso.
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#94A3B8",
+                lineHeight: "1.7",
+                margin: 0,
+              }}
+            >
+              Se por qualquer motivo você não ficar satisfeito com a Apex
+              Quantum nos primeiros 7 dias, basta nos enviar uma mensagem e
+              devolvemos{" "}
+              <strong style={{ color: "#22D3EE" }}>
+                100% do seu investimento
+              </strong>
+              . Sem perguntas, sem burocracia. O risco é todo nosso.
             </p>
           </div>
         </div>
 
         {/* ── DEPOIMENTOS ── */}
         <div style={{ ...sectionTitleStyle, marginTop: "56px" }}>
-          <h2 style={{ ...h1Style, fontSize: "24px" }}>O que nossos clientes dizem</h2>
-          <p style={subtitleStyle}>Resultados reais de pessoas que confiam na Apex Quantum</p>
+          <h2 style={{ ...h1Style, fontSize: "24px" }}>
+            O que nossos clientes dizem
+          </h2>
+          <p style={subtitleStyle}>
+            Resultados reais de pessoas que confiam na Apex Quantum
+          </p>
         </div>
 
         <div className="testimonial-grid" style={testimonialGridStyle}>
           {TESTIMONIALS.map((t, i) => (
             <div key={i} style={testimonialCardStyle}>
-              <div style={{ display: "flex", gap: "3px", marginBottom: "14px" }}>
+              <div
+                style={{ display: "flex", gap: "3px", marginBottom: "14px" }}
+              >
                 {Array.from({ length: t.stars }).map((_, j) => (
                   <StarIcon key={j} />
                 ))}
               </div>
-              <p style={{ fontSize: "13.5px", color: "#CBD5E1", lineHeight: "1.75", margin: "0 0 18px", fontStyle: "italic" }}>
+              <p
+                style={{
+                  fontSize: "13.5px",
+                  color: "#CBD5E1",
+                  lineHeight: "1.75",
+                  margin: "0 0 18px",
+                  fontStyle: "italic",
+                }}
+              >
                 &ldquo;{t.text}&rdquo;
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+              >
                 <div style={avatarStyle}>{t.avatar}</div>
                 <div>
-                  <div style={{ fontSize: "14px", fontWeight: "600", color: "#E2E8F0" }}>{t.name}</div>
-                  <div style={{ fontSize: "12px", color: "#64748B" }}>{t.role}</div>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "#E2E8F0",
+                    }}
+                  >
+                    {t.name}
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#64748B" }}>
+                    {t.role}
+                  </div>
                 </div>
               </div>
             </div>
@@ -541,14 +779,22 @@ export default function Checkout() {
 
         {/* ── FOOTER ── */}
         <footer style={footerStyle}>
-          <div style={{ marginBottom: "8px", fontSize: "15px", fontWeight: "700", color: "#475569" }}>
+          <div
+            style={{
+              marginBottom: "8px",
+              fontSize: "15px",
+              fontWeight: "700",
+              color: "#475569",
+            }}
+          >
             APEX QUANTUM
           </div>
           <p style={{ margin: "0 0 6px", fontSize: "12px" }}>
-            © 2026 Apex Quantum AI. Todos os direitos reservados.
+            © 2025 Apex Quantum AI. Todos os direitos reservados.
           </p>
           <p style={{ margin: 0, fontSize: "11px", color: "#334155" }}>
-            Todo investimento envolve riscos. Rentabilidade passada não é garantia de resultados futuros.
+            Todo investimento envolve riscos. Rentabilidade passada não é
+            garantia de resultados futuros.
           </p>
         </footer>
       </div>
@@ -562,8 +808,22 @@ export default function Checkout() {
 
 function SecurityBar() {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", padding: "16px", marginTop: "12px", fontSize: "12px", color: "#64748B", flexWrap: "wrap" }}>
-      <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "16px",
+        padding: "16px",
+        marginTop: "12px",
+        fontSize: "12px",
+        color: "#64748B",
+        flexWrap: "wrap",
+      }}
+    >
+      <span
+        style={{ display: "flex", alignItems: "center", gap: "5px" }}
+      >
         <LockIcon /> Dados protegidos
       </span>
       <span style={{ color: "#334155" }}>•</span>
@@ -580,7 +840,8 @@ function SecurityBar() {
 
 const pageStyle = {
   minHeight: "100vh",
-  background: "linear-gradient(180deg, #0A0E1A 0%, #0D1224 50%, #0A0E1A 100%)",
+  background:
+    "linear-gradient(180deg, #0A0E1A 0%, #0D1224 50%, #0A0E1A 100%)",
   color: "#E2E8F0",
   position: "relative",
   overflow: "hidden",
@@ -603,7 +864,8 @@ const glowTopStyle = {
   transform: "translateX(-50%)",
   width: "900px",
   height: "500px",
-  background: "radial-gradient(ellipse, rgba(34,211,238,0.07) 0%, transparent 70%)",
+  background:
+    "radial-gradient(ellipse, rgba(34,211,238,0.07) 0%, transparent 70%)",
   pointerEvents: "none",
   zIndex: 0,
 };
@@ -614,7 +876,8 @@ const glowRedStyle = {
   right: "-120px",
   width: "450px",
   height: "450px",
-  background: "radial-gradient(ellipse, rgba(239,68,68,0.05) 0%, transparent 70%)",
+  background:
+    "radial-gradient(ellipse, rgba(239,68,68,0.05) 0%, transparent 70%)",
   pointerEvents: "none",
   zIndex: 0,
 };
@@ -659,7 +922,8 @@ const timerBarStyle = {
   padding: "12px 24px",
   margin: "20px auto 32px",
   maxWidth: "480px",
-  background: "linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.04))",
+  background:
+    "linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.04))",
   border: "1px solid rgba(239,68,68,0.2)",
   borderRadius: "12px",
 };
@@ -716,7 +980,9 @@ const stepDot = (active) => ({
   justifyContent: "center",
   fontSize: "14px",
   fontWeight: "700",
-  background: active ? "linear-gradient(135deg, #22D3EE, #0891B2)" : "rgba(148,163,184,0.08)",
+  background: active
+    ? "linear-gradient(135deg, #22D3EE, #0891B2)"
+    : "rgba(148,163,184,0.08)",
   color: active ? "#0A0E1A" : "#64748B",
   transition: "all 0.4s ease",
 });
@@ -778,7 +1044,7 @@ const qrBoxStyle = {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  gap: "8px",
+  padding: "20px",
 };
 
 const noticeBoxStyle = {
@@ -794,7 +1060,8 @@ const guaranteeBoxStyle = {
   margin: "0 auto 40px",
   padding: "28px",
   borderRadius: "16px",
-  background: "linear-gradient(135deg, rgba(34,211,238,0.06), rgba(6,182,212,0.02))",
+  background:
+    "linear-gradient(135deg, rgba(34,211,238,0.06), rgba(6,182,212,0.02))",
   border: "1px solid rgba(34,211,238,0.15)",
   display: "flex",
   gap: "18px",
