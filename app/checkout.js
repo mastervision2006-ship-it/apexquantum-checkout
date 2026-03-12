@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ─────────────────────────────────────────────
    CONFIGURAÇÃO — Planos, Pix e Depoimentos
@@ -23,7 +23,7 @@ const PLANS = [
     ],
     pixCode:
       "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a520400005303986540597.005802BR5911ECOTECH LTD6002NA622905250018a8007afc4aadbb1c1f450630417AC",
-    qrImage: "https://i.ibb.co/zWWJhvL4",
+    qrImage: "https://i.ibb.co.com/Y44v0Sts/Captura-de-Tela-2026-03-11-a-s-23-54-19.png",
     highlight: false,
   },
   {
@@ -43,7 +43,7 @@ const PLANS = [
     ],
     pixCode:
       "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a5204000053039865406597.005802BR5911ECOTECH LTD6002NA62290525003caf232cfd4d738bc22996c63042CE0",
-    qrImage: "https://i.ibb.co/0jY4N4x1",
+    qrImage: "https://i.ibb.co.com/TDdjcjqK/Captura-de-Tela-2026-03-11-a-s-23-57-23.png",
     highlight: true,
   },
   {
@@ -67,7 +67,7 @@ const PLANS = [
     ],
     pixCode:
       "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a52040000530398654071997.005802BR5911ECOTECH LTD6002NA6229052500f5db3b146348f184dbf8e6c6304A28F",
-    qrImage: "https://i.ibb.co/wFSHK13d",
+    qrImage: "https://i.ibb.co.com/TDyKfgHk/Captura-de-Tela-2026-03-11-a-s-23-58-07.png",
     highlight: false,
   },
 ];
@@ -173,6 +173,7 @@ export default function Checkout() {
   const [timeLeft, setTimeLeft] = useState(15 * 60);
   const [copied, setCopied] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
+  const formRef = useRef(null);
 
   useEffect(() => {
     setAnimateIn(true);
@@ -212,7 +213,9 @@ export default function Checkout() {
   const handleSubmit = () => {
     if (validate()) {
       setStep(2);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     }
   };
 
@@ -403,7 +406,7 @@ export default function Checkout() {
         </div>
 
         {/* ── FORMULÁRIO / PAGAMENTO ── */}
-        <div className="form-section" style={formSectionStyle}>
+        <div className="form-section" ref={formRef} style={formSectionStyle}>
           {/* Steps */}
           <div
             style={{
