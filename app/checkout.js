@@ -22,8 +22,7 @@ const PLANS = [
       "Consultoria e programação do software personalizada",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a520400005303986540597.005802BR5911ECOTECH LTD6002NA622905250018a8007afc4aadbb1c1f450630417AC",
-    qrImage: "https://i.ibb.co.com/Y44v0Sts/Captura-de-Tela-2026-03-11-a-s-23-54-19.png",
+    pixCode: "00020101021226860014br.gov.bcb.pix2564qrcode.fitbank.com.br/QR/cob/EEE4132DCEEE55FDB3F02FB856CDA9277A65204000053039865802BR5925PLEBANK.COM.BR SOLUCOES E6007BARUERI61080645400062070503***6304041E",
   },
   {
     id: "ia-trading-plus",
@@ -41,8 +40,7 @@ const PLANS = [
       "Planejamento patrimonial exclusivo",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a5204000053039865406597.005802BR5911ECOTECH LTD6002NA62290525003caf232cfd4d738bc22996c63042CE0",
-    qrImage: "https://i.ibb.co.com/TDdjcjqK/Captura-de-Tela-2026-03-11-a-s-23-57-23.png",
+    pixCode: "00020101021226860014br.gov.bcb.pix2564qrcode.fitbank.com.br/QR/cob/BB75999D4032109A21E7D4BFCAB602156665204000053039865802BR5925PLEBANK.COM.BR SOLUCOES E6007BARUERI61080645400062070503***63046E8D",
   },
   {
     id: "ia-trading-master",
@@ -64,8 +62,7 @@ const PLANS = [
       "Acesso antecipado a novas funcionalidades",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a52040000530398654071997.005802BR5911ECOTECH LTD6002NA6229052500f5db3b146348f184dbf8e6c6304A28F",
-    qrImage: "https://i.ibb.co.com/TDyKfgHk/Captura-de-Tela-2026-03-11-a-s-23-58-07.png",
+    pixCode: "00020101021226860014br.gov.bcb.pix2564qrcode.fitbank.com.br/QR/cob/EA696C3AA28F3248F0FE7238135A88C70665204000053039865802BR5925PLEBANK.COM.BR SOLUCOES E6007BARUERI61080645400062070503***630464FC",
   },
 ];
 
@@ -542,7 +539,7 @@ export default function Checkout() {
                 boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
               }}>
                 <img
-                  src={currentPlan.qrImage}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentPlan.pixCode)}`}
                   alt={`QR Code Pix — ${currentPlan.name}`}
                   width={180}
                   height={180}
