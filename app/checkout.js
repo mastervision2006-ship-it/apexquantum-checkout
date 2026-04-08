@@ -343,10 +343,11 @@ export default function Checkout() {
                     color: "var(--text-soft)", verticalAlign: "top", lineHeight: "2.2",
                   }}>R$ </span>
                   <span style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(2.2rem, 5vw, 2.8rem)", fontWeight: 700,
+                    fontFamily: "var(--font-price)",
+                    fontSize: "clamp(2.2rem, 5vw, 2.8rem)", fontWeight: 800,
                     color: isSelected ? "var(--gold-bright)" : "var(--text-base)",
                     transition: "color 0.3s ease",
+                    letterSpacing: "-0.02em",
                   }}>
                     {plan.priceShort}
                   </span>
@@ -454,7 +455,7 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem", fontWeight: 700, color: "var(--text-base)", lineHeight: 1 }}>
+                  <div style={{ fontFamily: "var(--font-price)", fontSize: "1.6rem", fontWeight: 800, color: "var(--text-base)", lineHeight: 1, letterSpacing: "-0.02em" }}>
                     R$ {currentPlan.price}
                   </div>
                   <div style={{ fontFamily: "var(--font-ui)", fontSize: "0.72rem", color: "var(--text-dim)", marginTop: "4px" }}>
@@ -519,9 +520,10 @@ export default function Checkout() {
                 {currentPlan.name}
               </h2>
               <div style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "2.2rem", fontWeight: 700,
+                fontFamily: "var(--font-price)",
+                fontSize: "2.2rem", fontWeight: 800,
                 color: "var(--gold-bright)", marginBottom: "0.25rem",
+                letterSpacing: "-0.02em",
               }}>
                 R$ {currentPlan.price}
               </div>
