@@ -349,7 +349,7 @@ export default function Checkout() {
                     transition: "color 0.3s ease",
                     letterSpacing: "-0.02em",
                   }}>
-                    {plan.priceShort}
+                    {plan.price}
                   </span>
                 </div>
                 <div style={{
