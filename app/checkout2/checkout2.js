@@ -448,6 +448,68 @@ export default function Checkout2() {
           })}
         </div>
 
+        {/* ── CUPOM DE DESCONTO ── */}
+        <div style={{ maxWidth: "520px", margin: "0 auto 2rem" }}>
+          <div style={{
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-gold)",
+            borderRadius: "16px",
+            padding: "1.25rem 1.5rem",
+          }}>
+            <label style={{
+              fontFamily: "var(--font-ui)", fontSize: "0.65rem", fontWeight: 600,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              color: "var(--text-dim)", display: "flex", alignItems: "center", gap: "6px",
+              marginBottom: "0.75rem",
+            }}>
+              <TagIcon /> Cupom de desconto
+            </label>
+            {couponSuccess ? (
+              <div style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "0.75rem 1rem", borderRadius: "10px",
+                background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.25)",
+              }}>
+                <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.85rem", color: "#4ade80", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <CheckCircleIcon /> {couponSuccess}
+                </span>
+                <button onClick={removeCoupon} style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "var(--font-ui)", fontSize: "0.75rem", color: "var(--text-dim)", padding: "2px 6px",
+                }}>
+                  Remover
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="text"
+                  placeholder="Digite seu cupom"
+                  className="form-input"
+                  value={couponInput}
+                  onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
+                  onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
+                  style={{ flex: 1 }}
+                />
+                <button onClick={applyCoupon} style={{
+                  padding: "0 1.25rem", borderRadius: "10px",
+                  border: "1px solid var(--border-gold)",
+                  background: "rgba(196,154,56,0.08)", color: "var(--gold)",
+                  fontFamily: "var(--font-ui)", fontSize: "0.82rem", fontWeight: 600,
+                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s ease",
+                }}>
+                  Aplicar
+                </button>
+              </div>
+            )}
+            {couponError && (
+              <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.78rem", color: "#F87171", marginTop: "5px", display: "block" }}>
+                {couponError}
+              </span>
+            )}
+          </div>
+        </div>
+
         {/* ── FORMULÁRIO / PIX ── */}
         <div ref={formRef} className="form-card" style={{
           background: "var(--bg-card)",
@@ -554,62 +616,6 @@ export default function Checkout2() {
                   )}
                 </div>
               ))}
-
-              {/* ── CUPOM DE DESCONTO ── */}
-              <div style={{ marginBottom: "1.25rem" }}>
-                <label className="form-label" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <TagIcon /> Cupom de desconto
-                </label>
-                {couponSuccess ? (
-                  <div style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "0.75rem 1rem",
-                    borderRadius: "10px",
-                    background: "rgba(74,222,128,0.08)",
-                    border: "1px solid rgba(74,222,128,0.25)",
-                  }}>
-                    <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.85rem", color: "#4ade80", display: "flex", alignItems: "center", gap: "6px" }}>
-                      <CheckCircleIcon /> {couponSuccess}
-                    </span>
-                    <button onClick={removeCoupon} style={{
-                      background: "none", border: "none", cursor: "pointer",
-                      fontFamily: "var(--font-ui)", fontSize: "0.75rem", color: "var(--text-dim)",
-                      padding: "2px 6px",
-                    }}>
-                      Remover
-                    </button>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <input
-                      type="text"
-                      placeholder="Digite seu cupom"
-                      className="form-input"
-                      value={couponInput}
-                      onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
-                      onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
-                      style={{ flex: 1 }}
-                    />
-                    <button onClick={applyCoupon} style={{
-                      padding: "0 1.25rem",
-                      borderRadius: "10px",
-                      border: "1px solid var(--border-gold)",
-                      background: "rgba(196,154,56,0.08)",
-                      color: "var(--gold)",
-                      fontFamily: "var(--font-ui)", fontSize: "0.82rem", fontWeight: 600,
-                      cursor: "pointer", whiteSpace: "nowrap",
-                      transition: "all 0.2s ease",
-                    }}>
-                      Aplicar
-                    </button>
-                  </div>
-                )}
-                {couponError && (
-                  <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.78rem", color: "#F87171", marginTop: "5px", display: "block" }}>
-                    {couponError}
-                  </span>
-                )}
-              </div>
 
               <button className="btn-beam" onClick={handleSubmit} style={{ marginTop: "0.5rem" }}>
                 <span className="btn-beam-text">Continuar para pagamento</span>
