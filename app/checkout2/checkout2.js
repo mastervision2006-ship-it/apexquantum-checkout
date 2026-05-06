@@ -456,14 +456,19 @@ export default function Checkout2() {
             borderRadius: "16px",
             padding: "1.25rem 1.5rem",
           }}>
-            <label style={{
-              fontFamily: "var(--font-ui)", fontSize: "0.65rem", fontWeight: 600,
-              letterSpacing: "0.12em", textTransform: "uppercase",
-              color: "var(--text-dim)", display: "flex", alignItems: "center", gap: "6px",
-              marginBottom: "0.75rem",
-            }}>
-              <TagIcon /> Cupom de desconto
-            </label>
+            <div style={{ marginBottom: "0.75rem" }}>
+              <label style={{
+                fontFamily: "var(--font-ui)", fontSize: "0.65rem", fontWeight: 600,
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                color: "var(--gold)", display: "flex", alignItems: "center", gap: "6px",
+                marginBottom: "4px",
+              }}>
+                <TagIcon /> Código de Desbloqueio
+              </label>
+              <p style={{ fontFamily: "var(--font-ui)", fontSize: "0.75rem", color: "var(--text-dim)", margin: 0 }}>
+                Código fornecido exclusivamente pelo seu consultor Apex Quantum
+              </p>
+            </div>
             {couponSuccess ? (
               <div style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -484,7 +489,7 @@ export default function Checkout2() {
               <div style={{ display: "flex", gap: "8px" }}>
                 <input
                   type="text"
-                  placeholder="Digite seu cupom"
+                  placeholder="Digite seu código de desbloqueio"
                   className="form-input"
                   value={couponInput}
                   onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
