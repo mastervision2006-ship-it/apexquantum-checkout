@@ -11,6 +11,42 @@ const COUPONS = {
 };
 
 /* ─────────────────────────────────────────────
+   PIX — geração dinâmica via EMV + CRC16
+   ───────────────────────────────────────────── */
+const PIX_KEY = "999211f3-7393-476f-b986-7465fa2be63a";
+const MERCHANT_NAME = "ECOTECH LTD";
+const MERCHANT_CITY = "NA";
+
+function crc16(str) {
+  let crc = 0xffff;
+  for (let i = 0; i < str.length; i++) {
+    crc ^= str.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) {
+      crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
+    }
+  }
+  return crc.toString(16).toUpperCase().padStart(4, "0");
+}
+
+function buildPixCode(amount) {
+  const f = (id, val) => `${id}${String(val.length).padStart(2, "0")}${val}`;
+  const merchant = f("00", "br.gov.bcb.pix") + f("01", PIX_KEY);
+  const payload = [
+    f("00", "01"),
+    f("26", merchant),
+    f("52", "0000"),
+    f("53", "986"),
+    f("54", amount.toFixed(2)),
+    f("58", "BR"),
+    f("59", MERCHANT_NAME.slice(0, 25)),
+    f("60", MERCHANT_CITY.slice(0, 15)),
+    f("62", f("05", "***")),
+    "6304",
+  ].join("");
+  return payload + crc16(payload);
+}
+
+/* ─────────────────────────────────────────────
    DADOS — Planos, Pix e Depoimentos
    ───────────────────────────────────────────── */
 
@@ -31,8 +67,6 @@ const PLANS = [
       "Consultoria e programação do software personalizada",
       "Garantia incondicional de 7 dias",
     ],
-    // Código PIX para R$ 597,00
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a5204000053039865406597.005802BR5911ECOTECH LTD6002NA62290525003caf232cfd4d738bc22996c63042CE0",
   },
   {
     id: "ia-trading-plus",
@@ -51,8 +85,6 @@ const PLANS = [
       "Planejamento patrimonial exclusivo",
       "Garantia incondicional de 7 dias",
     ],
-    // TODO: substituir pelo código PIX gerado para R$ 997,00
-    pixCode: "INSERIR_PIX_997",
   },
   {
     id: "ia-trading-master",
@@ -75,7 +107,6 @@ const PLANS = [
       "Acesso antecipado a novas funcionalidades",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a52040000530398654071997.005802BR5911ECOTECH LTD6002NA6229052500f5db3b146348f184dbf8e6c6304A28F",
   },
 ];
 
@@ -220,6 +251,7 @@ export default function Checkout2() {
   const currentPlan = PLANS.find((p) => p.id === selectedPlan);
   const finalPrice = Math.max(0, currentPlan.priceNum - appliedDiscount);
   const hasDiscount = appliedDiscount > 0;
+  const pixCode = buildPixCode(finalPrice);
 
   const applyCoupon = () => {
     const code = couponInput.trim().toUpperCase();
@@ -241,7 +273,7 @@ export default function Checkout2() {
   };
 
   const handleCopyPix = () => {
-    navigator.clipboard.writeText(currentPlan.pixCode).catch(() => {});
+    navigator.clipboard.writeText(pixCode).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -676,7 +708,7 @@ export default function Checkout2() {
                 marginBottom: "1.5rem", boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
               }}>
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentPlan.pixCode)}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(pixCode)}`}
                   alt={`QR Code Pix — ${currentPlan.name}`}
                   width={180} height={180}
                   style={{ borderRadius: "8px", display: "block" }}
@@ -708,7 +740,7 @@ export default function Checkout2() {
                 maxHeight: "56px", overflow: "hidden",
                 marginBottom: "1.25rem",
               }}>
-                {currentPlan.pixCode}
+                {pixCode}
               </div>
 
               {/* Notice */}
