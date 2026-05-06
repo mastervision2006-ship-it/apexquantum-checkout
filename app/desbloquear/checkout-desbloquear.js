@@ -188,6 +188,15 @@ function GreenCheckIcon() {
 }
 
 /* ─────────────────────────
+   CUPONS VÁLIDOS
+   ───────────────────────── */
+
+const VALID_COUPONS = {
+  "APEX250": 250,
+  "APEX500": 500,
+};
+
+/* ─────────────────────────
    COMPONENTE PRINCIPAL
    ───────────────────────── */
 
@@ -235,9 +244,10 @@ export default function CheckoutDesbloquear() {
   }
 
   function handleApplyCoupon() {
-    const match = couponInput.trim().toUpperCase().match(/^APEX(\d+)$/);
-    if (match) {
-      setAppliedCoupon({ code: couponInput.trim().toUpperCase(), discount: parseInt(match[1], 10) });
+    const code = couponInput.trim().toUpperCase();
+    const discount = VALID_COUPONS[code];
+    if (discount !== undefined) {
+      setAppliedCoupon({ code, discount });
       setCouponError("");
     } else {
       setCouponError("Código inválido. Verifique com seu atendente.");
