@@ -3,12 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 
 /* ─────────────────────────────────────────────
-   CUPONS DE DESCONTO
+   Cupons validados via API (banco de dados)
    ───────────────────────────────────────────── */
-const COUPONS = {
-  APEX250: 250,
-  APEX500: 500,
-};
 
 /* ─────────────────────────────────────────────
    PIX — geração dinâmica via EMV + CRC16
@@ -232,6 +228,7 @@ export default function Checkout2() {
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
   const [couponSuccess, setCouponSuccess] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
   const formRef = useRef(null);
 
   useEffect(() => { setMounted(true); }, []);
@@ -253,15 +250,29 @@ export default function Checkout2() {
   const hasDiscount = appliedDiscount > 0;
   const pixCode = buildPixCode(finalPrice);
 
-  const applyCoupon = () => {
+  const applyCoupon = async () => {
     const code = couponInput.trim().toUpperCase();
-    if (COUPONS[code]) {
-      setAppliedDiscount(COUPONS[code]);
-      setCouponSuccess(`Cupom aplicado! Desconto de R$ ${formatPrice(COUPONS[code])}`);
-      setCouponError("");
-    } else {
-      setCouponError("Cupom inválido ou expirado.");
-      setCouponSuccess("");
+    if (!code) return;
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setAppliedDiscount(data.discount);
+        setCouponSuccess(`Desconto de R$ ${formatPrice(data.discount)} aplicado`);
+        setCouponError("");
+      } else {
+        setCouponError("Código inválido, expirado ou já utilizado.");
+        setCouponSuccess("");
+      }
+    } catch {
+      setCouponError("Erro ao validar. Tente novamente.");
+    } finally {
+      setCouponLoading(false);
     }
   };
 
@@ -287,13 +298,26 @@ export default function Checkout2() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validate()) {
-      setStep(2);
-      setTimeout(() => {
-        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
+  const handleSubmit = async () => {
+    if (!validate()) return;
+    if (appliedDiscount > 0) {
+      const res = await fetch("/api/consume-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponInput.trim().toUpperCase() }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setCouponError("Este código já foi utilizado. Remova-o para continuar.");
+        setAppliedDiscount(0);
+        setCouponSuccess("");
+        return;
+      }
     }
+    setStep(2);
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   return (
@@ -525,17 +549,18 @@ export default function Checkout2() {
                   className="form-input"
                   value={couponInput}
                   onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
-                  onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
+                  onKeyDown={(e) => e.key === "Enter" && !couponLoading && applyCoupon()}
                   style={{ flex: 1 }}
                 />
-                <button onClick={applyCoupon} style={{
+                <button onClick={applyCoupon} disabled={couponLoading} style={{
                   padding: "0 1.25rem", borderRadius: "10px",
                   border: "1px solid var(--border-gold)",
                   background: "rgba(196,154,56,0.08)", color: "var(--gold)",
                   fontFamily: "var(--font-ui)", fontSize: "0.82rem", fontWeight: 600,
-                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s ease",
+                  cursor: couponLoading ? "not-allowed" : "pointer", whiteSpace: "nowrap", transition: "all 0.2s ease",
+                  opacity: couponLoading ? 0.6 : 1,
                 }}>
-                  Aplicar
+                  {couponLoading ? "..." : "Aplicar"}
                 </button>
               </div>
             )}
