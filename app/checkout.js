@@ -22,7 +22,7 @@ const PLANS = [
       "Consultoria e programação do software personalizada",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a520400005303986540597.005802BR5911ECOTECH LTD6002NA622905250018a8007afc4aadbb1c1f450630417AC",
+    pixCode: "",
   },
   {
     id: "ia-trading-plus",
@@ -40,7 +40,7 @@ const PLANS = [
       "Planejamento patrimonial exclusivo",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a5204000053039865406597.005802BR5911ECOTECH LTD6002NA62290525003caf232cfd4d738bc22996c63042CE0",
+    pixCode: "",
   },
   {
     id: "ia-trading-master",
@@ -62,7 +62,7 @@ const PLANS = [
       "Acesso antecipado a novas funcionalidades",
       "Garantia incondicional de 7 dias",
     ],
-    pixCode: "00020126580014br.gov.bcb.pix0136999211f3-7393-476f-b986-7465fa2be63a52040000530398654071997.005802BR5911ECOTECH LTD6002NA6229052500f5db3b146348f184dbf8e6c6304A28F",
+    pixCode: "",
   },
 ];
 
